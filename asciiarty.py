@@ -9,10 +9,16 @@ ASCII_brightness = '`^",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW
 def brightness_avg(px):
     """Convert RGB tuple pixel into brightness, using
     average of RGB values."""
-    return sum(px) // 3
+    return sum(px) / 3
 
 
-f_brightness = {"average": brightness_avg}
+def brightness_lightness(px):
+    """Convert RGB tuple pixel into brightness, using
+    lightness - the average of the min and max RGB values."""
+    return (max(px) + min(px)) / 2
+
+
+f_brightness = {"average": brightness_avg, "lightness": brightness_lightness}
 
 
 def brightness_to_ascii(px_bright):
@@ -36,7 +42,8 @@ def main():
     # TODO: add option to resize by entering width and height arguments (or just one?)
     size = (120, 80)
     # TODO: add option to select brightness calculation by keyword, e.g. "average"
-    brightness_calc = "average"
+    # brightness_calc = "average"
+    brightness_calc = "lightness"
     brightness_function = f_brightness[brightness_calc]
 
     args = parser.parse_args()

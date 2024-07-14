@@ -16,6 +16,7 @@ A simple project to convert photos into ASCII art, inspired by [Robert Heaton's 
 
 -   Multiple brightness conversion algorithms
     -   average, min_max, luminosity (0.21 R + 0.72 G + 0.07 B)
+    -   [More detail on StackOverflow](https://stackoverflow.com/questions/596216/formula-to-determine-perceived-brightness-of-rgb-color)
 -   Invert dark to light
 -   Print in color
 
