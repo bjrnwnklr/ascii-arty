@@ -78,7 +78,13 @@ def main():
     # TODO: add option to resize by entering width and height arguments (or just one?)
     size = (120, 80)
     # TODO: add an --invert parameter to invert the colors of the image
-    invert = True
+    invert = False
+    # TODO: add an --adjust switch and threshold (0-255) and factor (0-1) parameters
+    # To adjust any pixels darker than threshold by factor
+    adjust = True
+    factor = 0.6
+    threshold = 100
+
     # TODO: add option to select brightness calculation by keyword, e.g. "average"
     # brightness_calc = "average"
     # brightness_calc = "lightness"
@@ -114,6 +120,12 @@ def main():
     # convert pixel tuples into brightness numbers
     pixels_brightness = [brightness_function(pxl) for pxl in pixels]
     print(f"Converted pixels to brightness: {len(pixels_brightness)}")
+
+    # if --adjust selected, apply adjustment to each pixel
+    if adjust:
+        pixels_brightness = [
+            factor * pxl if pxl < threshold else pxl for pxl in pixels_brightness
+        ]
 
     # Convert brightness to ASCII character
     pixels_ascii = [brightness_to_ascii(pxl) for pxl in pixels_brightness]
