@@ -5,6 +5,39 @@ import sys
 
 ASCII_brightness = '`^",:;Il!i~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$'
 
+# sRGB luminance(Y) values
+rY = 0.212655
+gY = 0.715158
+bY = 0.072187
+
+
+def inv_gam_sRGB(ic: int):
+    """Convert a 256 RGB value into a normalized (0.0-1.0) RGB value with
+    inverse gamma applied."""
+    c = ic / 255.0
+    if c <= 0.04045:
+        return c / 12.92
+    else:
+        return pow(((c + 0.055) / 1.055), 2.4)
+
+
+def gam_sRGB(v):
+    if v <= 0.0031308:
+        v *= 12.92
+    else:
+        v = 1.055 * pow(v, 1.0 / 2.4) - 0.055
+        # the + 0.5 might not be required, try results
+    # return int(v * 255 + 0.5)
+    return int(v * 255)
+
+
+def luminance(px):
+    """Convert RGB tuple value into luminance, according to a very complicated formula
+    from https://stackoverflow.com/a/13558570."""
+    return gam_sRGB(
+        rY * inv_gam_sRGB(px[0]) + gY * inv_gam_sRGB(px[1]) + bY * inv_gam_sRGB(px[2])
+    )
+
 
 def brightness_avg(px):
     """Convert RGB tuple pixel into brightness, using
@@ -18,7 +51,11 @@ def brightness_lightness(px):
     return (max(px) + min(px)) / 2
 
 
-f_brightness = {"average": brightness_avg, "lightness": brightness_lightness}
+f_brightness = {
+    "average": brightness_avg,
+    "lightness": brightness_lightness,
+    "luminance": luminance,
+}
 
 
 def brightness_to_ascii(px_bright):
@@ -42,7 +79,8 @@ def main():
     size = (120, 80)
     # TODO: add option to select brightness calculation by keyword, e.g. "average"
     # brightness_calc = "average"
-    brightness_calc = "lightness"
+    # brightness_calc = "lightness"
+    brightness_calc = "luminance"
     brightness_function = f_brightness[brightness_calc]
 
     args = parser.parse_args()
