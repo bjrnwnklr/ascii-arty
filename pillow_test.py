@@ -1,4 +1,4 @@
-from PIL import Image, ImageOps
+from PIL import Image, ImageFilter
 
 
 def temp_save(im, suffix):
@@ -13,3 +13,19 @@ if __name__ == "__main__":
 
     # apply some transformation, then save image
     temp_save(im, "orig")
+
+    filters = [
+        ("contour", ImageFilter.CONTOUR),
+        ("detail", ImageFilter.DETAIL),
+        ("edge_enhance", ImageFilter.EDGE_ENHANCE),
+        ("edge_enhance_more", ImageFilter.EDGE_ENHANCE_MORE),
+        ("emboss", ImageFilter.EMBOSS),
+        ("find_edges", ImageFilter.FIND_EDGES),
+        ("sharpen", ImageFilter.SHARPEN),
+        ("smooth", ImageFilter.SMOOTH),
+        ("smooth_more", ImageFilter.SMOOTH_MORE),
+    ]
+
+    for n, f in filters:
+        tmp_im = im.filter(f)
+        temp_save(tmp_im, n)

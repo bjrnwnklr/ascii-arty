@@ -77,6 +77,8 @@ def main():
     )
     # TODO: add option to resize by entering width and height arguments (or just one?)
     size = (120, 80)
+    # TODO: add an --invert parameter to invert the colors of the image
+    invert = True
     # TODO: add option to select brightness calculation by keyword, e.g. "average"
     # brightness_calc = "average"
     # brightness_calc = "lightness"
@@ -93,12 +95,16 @@ def main():
         sys.exit(-1)
 
     # print image information
-    im_orig = Image.open(im_name)
-    print(im_orig.format, im_orig.size, im_orig.mode)
+    im = Image.open(im_name)
+    print(im.format, im.size, im.mode)
+
+    # if --invert, invert the image
+    if invert:
+        im = ImageOps.invert(im)
 
     # resize image to default size
     # fit to smallest dimension
-    im = ImageOps.contain(im_orig, size)
+    im = ImageOps.contain(im, size)
     print(f"Resized image: {im.size}")
 
     # convert image to 2d pixel data
