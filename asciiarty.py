@@ -23,8 +23,7 @@ f_brightness = {"average": brightness_avg, "lightness": brightness_lightness}
 
 def brightness_to_ascii(px_bright):
     """Convert a brightness pixel value (0-255) into an ASCII character"""
-    l = len(ASCII_brightness)
-    conversion_factor = 256 / l
+    conversion_factor = 256 / len(ASCII_brightness)
     ascii_index = int(px_bright / conversion_factor)
     return ASCII_brightness[ascii_index]
 
